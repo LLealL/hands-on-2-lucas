@@ -1,12 +1,14 @@
 package com.eldorado.hhzze.controller;
 
 import com.eldorado.hhzze.dto.CustomerDto;
+import com.eldorado.hhzze.exceptions.CustomerNotFoundException;
 import com.eldorado.hhzze.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -23,22 +25,26 @@ public class CustomerController {
     }
 
     @GetMapping
-    public void getCustomerList(){
-
+    public ResponseEntity<List<CustomerDto>> getCustomerList(){
+        log.info("Requesting Customer List...");
+        return ResponseEntity.ok(customerService.getCustomerList());
     }
 
-    @PutMapping("/{customerId}")
-    public void updateCustomer(@PathVariable UUID customerId){
-
+    @PutMapping
+    public ResponseEntity<CustomerDto> updateCustomer(@RequestBody CustomerDto customerDto){
+        log.info("Updating Customer {}",customerDto.getId());
+        return ResponseEntity.ok(customerService.updateCustomer(customerDto));
     }
 
-    @DeleteMapping("/{customerId}")
-    public void deleteCustomer(@PathVariable UUID customerId){
-
+    @DeleteMapping
+    public ResponseEntity<CustomerDto> deleteCustomer(@RequestBody CustomerDto customerDto){
+        log.info("Deleting Customer {}", customerDto);
+        return ResponseEntity.ok(customerService.removeCustomer(customerDto));
     }
 
     @GetMapping("/{customerId}")
-    public void getCustomer(@PathVariable UUID customerId){
-
+    public ResponseEntity<CustomerDto> getCustomer(@PathVariable UUID customerId){
+        log.info("Requesting Customer {}", customerId);
+        return ResponseEntity.ok(customerService.findCustomer(customerId));
     }
 }
