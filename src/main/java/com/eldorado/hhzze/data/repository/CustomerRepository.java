@@ -1,10 +1,9 @@
-package com.eldorado.hhzze.repository;
+package com.eldorado.hhzze.data.repository;
 
-import com.eldorado.hhzze.model.Customer;
+import com.eldorado.hhzze.data.model.Customer;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository

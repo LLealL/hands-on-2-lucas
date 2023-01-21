@@ -1,23 +1,25 @@
-package com.eldorado.hhzze.dto;
+package com.eldorado.hhzze.data.model;
 
-import com.eldorado.hhzze.model.types.Genre;
+import com.eldorado.hhzze.data.types.Genre;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.sql.Date;
 import java.util.UUID;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
-public class CustomerDto {
+@Document("customer")
+public class Customer {
 
+    @Id
     private UUID id;
-
     private String name;
 
     private Genre genre;
@@ -28,5 +30,6 @@ public class CustomerDto {
 
     private String phoneNumber;
 
-    private String Address;
+    private String address;
 }
+

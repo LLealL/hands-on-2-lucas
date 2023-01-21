@@ -1,6 +1,6 @@
-package com.eldorado.hhzze.repository;
+package com.eldorado.hhzze.data.repository;
 
-import com.eldorado.hhzze.model.CustomerImcEntity;
+import com.eldorado.hhzze.data.model.CustomerImcEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

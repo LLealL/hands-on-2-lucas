@@ -1,18 +1,22 @@
 package com.eldorado.hhzze.service;
 
-import com.eldorado.hhzze.dto.CustomerDto;
+import com.eldorado.hhzze.data.dto.CustomImcList;
+import com.eldorado.hhzze.data.dto.CustomerDto;
+import com.eldorado.hhzze.data.model.CustomerImcEntity;
+import com.eldorado.hhzze.data.repository.CustomerImcRepository;
 import com.eldorado.hhzze.exceptions.CustomerNotFoundException;
-import com.eldorado.hhzze.model.Customer;
-import com.eldorado.hhzze.repository.CustomerRepository;
+import com.eldorado.hhzze.data.model.Customer;
+import com.eldorado.hhzze.data.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +24,9 @@ import java.util.UUID;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+
+    private final CustomerImcRepository customerImcRepository;
+
 
     private final ModelMapper modelMapper;
     public CustomerDto saveCustomer(CustomerDto customerDto){
@@ -50,8 +57,8 @@ public class CustomerService {
 
         return customerDtoList;
     }
-    @SneakyThrows
-    public CustomerDto updateCustomer(CustomerDto customerDto) {
+
+    public CustomerDto updateCustomer(CustomerDto customerDto) throws CustomerNotFoundException {
 
 
         var customerFound= customerRepository.findById(customerDto.getId());
@@ -75,8 +82,8 @@ public class CustomerService {
         return customer;
 
     }
-    @SneakyThrows
-    public CustomerDto removeCustomer(CustomerDto customerDto){
+
+    public CustomerDto removeCustomer(CustomerDto customerDto) throws CustomerNotFoundException {
         var customerFound= customerRepository.findById(customerDto.getId());
 
         if(customerFound.isEmpty()) throw new CustomerNotFoundException();
@@ -86,12 +93,29 @@ public class CustomerService {
         return modelMapper.map(customerFound, CustomerDto.class);
     }
 
-    @SneakyThrows
-    public CustomerDto findCustomer(UUID customerId) {
+
+    public CustomerDto findCustomer(UUID customerId) throws CustomerNotFoundException {
         var customerFound= customerRepository.findById(customerId);
 
         if(customerFound.isEmpty()) throw new CustomerNotFoundException();
 
-        return modelMapper.map(customerFound, CustomerDto.class);
+        var customerImcs = customerImcRepository.findByClientId(customerId);
+
+        var customerCustom = modelMapper.map(customerImcs, CustomImcList.class);
+
+        var customerDto = modelMapper.map(customerFound, CustomerDto.class);
+
+        customerDto.setImcList(customerCustom);
+
+        customerDto.setHasChanged(verifyChangeImc(customerImcs));
+
+
+        return customerDto;
     }
+
+
+    private boolean verifyChangeImc(List<CustomerImcEntity> clientImcs){
+        return clientImcs.stream().collect(Collectors.groupingBy(client -> client.getImcEntity().getClassification())).size()>1;
+    }
+
 }

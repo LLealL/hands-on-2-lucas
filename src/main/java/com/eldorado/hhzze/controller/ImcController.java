@@ -1,6 +1,7 @@
 package com.eldorado.hhzze.controller;
 
-import com.eldorado.hhzze.dto.ImcDto;
+import com.eldorado.hhzze.data.dto.ImcDto;
+import com.eldorado.hhzze.exceptions.IMCNotFoundException;
 import com.eldorado.hhzze.service.ImcService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @RequestMapping("/imc-calculator")
 @Slf4j
 @RequiredArgsConstructor
-public class imcController {
+public class ImcController {
 
 
     private final ImcService imcService;
@@ -34,19 +35,31 @@ public class imcController {
     @PutMapping
     public ResponseEntity<ImcDto> updateImc(@RequestBody ImcDto imcDto) {
         log.info("Updating Imc {}",imcDto.getId());
-        return ResponseEntity.ok(imcService.updateImc(imcDto));
+        try {
+            return ResponseEntity.ok(imcService.updateImc(imcDto));
+        } catch (IMCNotFoundException e) {
+            return (ResponseEntity<ImcDto>) ResponseEntity.notFound();
+        }
     }
 
     @DeleteMapping
     public ResponseEntity<ImcDto> deleteImc(@RequestBody ImcDto imcDto) {
         log.info("Deleting Imc {}",imcDto.getId());
-        return ResponseEntity.ok(imcService.removeImc(imcDto));
+        try {
+            return ResponseEntity.ok(imcService.removeImc(imcDto));
+        } catch (IMCNotFoundException e) {
+            return (ResponseEntity<ImcDto>) ResponseEntity.notFound();
+        }
     }
 
     @GetMapping("/{imcId}")
     public ResponseEntity<ImcDto> getImc(@PathVariable UUID imcId) {
         log.info("Requesting Imc {}",imcId);
-        return ResponseEntity.ok(imcService.findImc(imcId));
+        try {
+            return ResponseEntity.ok(imcService.findImc(imcId));
+        } catch (IMCNotFoundException e) {
+            return (ResponseEntity<ImcDto>) ResponseEntity.notFound();
+        }
 
     }
 

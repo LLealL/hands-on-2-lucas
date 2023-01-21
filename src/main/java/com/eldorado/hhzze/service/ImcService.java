@@ -1,15 +1,14 @@
 package com.eldorado.hhzze.service;
 
 
-import com.eldorado.hhzze.dto.CustomerDto;
-import com.eldorado.hhzze.dto.ImcDto;
-import com.eldorado.hhzze.dto.ImcDto;
-import com.eldorado.hhzze.exceptions.CustomerNotFoundException;
+
+import com.eldorado.hhzze.data.dto.ImcDto;
+
 import com.eldorado.hhzze.exceptions.IMCNotFoundException;
-import com.eldorado.hhzze.model.ImcEntity;
-import com.eldorado.hhzze.repository.ImcRepository;
+import com.eldorado.hhzze.data.model.ImcEntity;
+import com.eldorado.hhzze.data.repository.ImcRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,6 @@ public class ImcService {
 
     private final ModelMapper modelMapper;
 
-    public ImcDto imcDto;
 
     public ImcDto saveImc(ImcDto imcDto){
 
@@ -57,16 +55,12 @@ public class ImcService {
 
         return imcDtoList;
     }
-    @SneakyThrows
-    public ImcDto updateImc(ImcDto imcDto) {
+
+
+    public ImcDto updateImc(ImcDto imcDto) throws IMCNotFoundException {
         var imcFound= imcRepository.findById(imcDto.getId());
 
         if(imcFound.isEmpty()) throw new IMCNotFoundException();
-
-
-        imcFound.get().setClassification(imcDto.getClassification());
-        imcFound.get().setBodyMass(imcDto.getBodyMass());
-        imcFound.get().setObesityLevel(imcDto.getObesityLevel());
 
 
         var imcSave = imcRepository.save(imcFound.get());
@@ -79,11 +73,12 @@ public class ImcService {
 
     }
 
-    @SneakyThrows
-    public ImcDto removeImc(ImcDto imcDto) {
+
+
+    public ImcDto removeImc(ImcDto imcDto) throws IMCNotFoundException {
         var imcFound= imcRepository.findById(imcDto.getId());
 
-        if(imcFound.isEmpty()) throw new CustomerNotFoundException();
+        if(imcFound.isEmpty()) throw new IMCNotFoundException();
 
         imcRepository.deleteById(imcFound.get().getId());
 
@@ -91,8 +86,9 @@ public class ImcService {
 
     }
 
-    @SneakyThrows
-    public ImcDto findImc(UUID imcId) {
+
+
+    public ImcDto findImc(UUID imcId) throws IMCNotFoundException {
         var imcFound= imcRepository.findById(imcId);
 
         if(imcFound.isEmpty()) throw new IMCNotFoundException();

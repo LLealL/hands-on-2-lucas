@@ -1,4 +1,4 @@
-package com.eldorado.hhzze.model;
+package com.eldorado.hhzze.data.model;
 
 import com.mongodb.lang.NonNull;
 import lombok.AllArgsConstructor;

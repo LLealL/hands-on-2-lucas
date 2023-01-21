@@ -1,7 +1,6 @@
 server:
   port: 8080
   name: "HHZZE"
----
 spring:
   config:
     activate:
@@ -10,12 +9,3 @@ spring:
       mongodb:
         auto-index-creation: true
         uri: ${MONGODB_CONNECTION_STRING}
----
-spring:
-  config:
-    activate:
-      on-profile: dev
-    data:
-      mongodb:
-        auto-index-creation: true
-        uri: mongodb://localhost:27017/imc-calculator?retryWrites=true&w=majority?ssl=false
