@@ -1,6 +1,6 @@
 package com.eldorado.hhzze.controller;
 
-import com.eldorado.hhzze.dto.CustomerImcDto;
+import com.eldorado.hhzze.data.dto.CustomerImcDto;
 import com.eldorado.hhzze.service.CustomerImcService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

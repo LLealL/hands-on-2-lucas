@@ -1,4 +1,4 @@
-package com.eldorado.hhzze.dto;
+package com.eldorado.hhzze.data.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

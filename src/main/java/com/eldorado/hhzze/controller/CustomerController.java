@@ -1,6 +1,6 @@
 package com.eldorado.hhzze.controller;
 
-import com.eldorado.hhzze.dto.CustomerDto;
+import com.eldorado.hhzze.data.dto.CustomerDto;
 import com.eldorado.hhzze.exceptions.CustomerNotFoundException;
 import com.eldorado.hhzze.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -33,18 +33,30 @@ public class CustomerController {
     @PutMapping
     public ResponseEntity<CustomerDto> updateCustomer(@RequestBody CustomerDto customerDto){
         log.info("Updating Customer {}",customerDto.getId());
-        return ResponseEntity.ok(customerService.updateCustomer(customerDto));
+        try {
+            return ResponseEntity.ok(customerService.updateCustomer(customerDto));
+        } catch (CustomerNotFoundException e) {
+            return (ResponseEntity<CustomerDto>) ResponseEntity.notFound();
+        }
     }
 
     @DeleteMapping
     public ResponseEntity<CustomerDto> deleteCustomer(@RequestBody CustomerDto customerDto){
         log.info("Deleting Customer {}", customerDto);
-        return ResponseEntity.ok(customerService.removeCustomer(customerDto));
+        try {
+            return ResponseEntity.ok(customerService.removeCustomer(customerDto));
+        } catch (CustomerNotFoundException e) {
+            return (ResponseEntity<CustomerDto>) ResponseEntity.notFound();
+        }
     }
 
     @GetMapping("/{customerId}")
     public ResponseEntity<CustomerDto> getCustomer(@PathVariable UUID customerId){
         log.info("Requesting Customer {}", customerId);
-        return ResponseEntity.ok(customerService.findCustomer(customerId));
+        try {
+            return ResponseEntity.ok(customerService.findCustomer(customerId));
+        } catch (CustomerNotFoundException e) {
+            return (ResponseEntity<CustomerDto>) ResponseEntity.notFound();
+        }
     }
 }

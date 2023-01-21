@@ -1,6 +1,7 @@
-package com.eldorado.hhzze.model;
+package com.eldorado.hhzze.data.model;
 
-import com.eldorado.hhzze.model.types.Genre;
+import com.eldorado.hhzze.data.types.ObesityClassification;
+import com.eldorado.hhzze.data.types.ObesityLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,28 +9,23 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.sql.Date;
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Document("customer")
-public class Customer {
+@Document("imc-calculator")
+public class ImcEntity {
 
     @Id
     private UUID id;
-    private String name;
 
-    private Genre genre;
+    private float bodyMass;
 
-    private Date birthday;
+    private ObesityClassification classification;
 
-    private Integer monthlyFrequency;
+    private ObesityLevel obesityLevel;
 
-    private String phoneNumber;
 
-    private String Address;
 }
-

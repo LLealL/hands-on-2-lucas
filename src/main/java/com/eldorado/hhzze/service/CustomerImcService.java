@@ -1,10 +1,11 @@
 package com.eldorado.hhzze.service;
 
-import com.eldorado.hhzze.dto.CustomerImcDto;
-import com.eldorado.hhzze.model.CustomerImcEntity;
-import com.eldorado.hhzze.model.ImcEntity;
-import com.eldorado.hhzze.repository.CustomerImcRepository;
-import com.eldorado.hhzze.repository.ImcRepository;
+import com.eldorado.hhzze.data.dto.CustomerImcDto;
+import com.eldorado.hhzze.data.model.CustomerImcEntity;
+import com.eldorado.hhzze.data.model.ImcEntity;
+import com.eldorado.hhzze.data.types.ObesityClassification;
+import com.eldorado.hhzze.data.repository.CustomerImcRepository;
+import com.eldorado.hhzze.data.repository.ImcRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -52,7 +53,7 @@ public class CustomerImcService {
     private ImcEntity calculateImc(Double bodyMass){
         var imcs = imcRepository.findAll();
 
-        return imcs.stream().filter(imcs1 -> imcs1.getBodyMass() > bodyMass).findFirst().orElse(ImcEntity.builder().classification("NOT DEFINED").build());
+        return imcs.stream().filter(imcs1 -> imcs1.getBodyMass() > bodyMass).findFirst().orElse(ImcEntity.builder().classification(ObesityClassification.NOT_DEFINED).build());
 
     }
     private Double calculateBodyMass(CustomerImcDto customerImcDto){
